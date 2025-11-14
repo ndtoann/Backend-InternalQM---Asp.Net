@@ -1,0 +1,6 @@
+@Backend_InternalQM_HostAddress = http://localhost:5089
+
+GET {{Backend_InternalQM_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
