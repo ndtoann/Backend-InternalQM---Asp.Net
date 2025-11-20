@@ -17,7 +17,7 @@ public partial class TestRunPractice
 
     public string Result { get; set; } = null!;
 
-    public string? CreatedBy { get; set; }
+    public long? CreatedBy { get; set; }
 
     public DateOnly? CreatedAt { get; set; }
 }

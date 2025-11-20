@@ -35,11 +35,11 @@ public partial class ExamTrialRunAnswer
 
     public DateOnly? CreatedAt { get; set; }
 
-    public string? UpdatedBy { get; set; }
+    public long? UpdatedBy { get; set; }
 
     public DateOnly? UpdatedAt { get; set; }
 
-    public string? DeleteBy { get; set; }
+    public long? DeleteBy { get; set; }
 
     public DateOnly? DeleteAt { get; set; }
 }

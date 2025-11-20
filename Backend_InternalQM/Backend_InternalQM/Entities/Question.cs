@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Backend_InternalQM.Entities;
 
-public partial class QuestionTraining
+public partial class Question
 {
     public long Id { get; set; }
 
@@ -19,15 +19,19 @@ public partial class QuestionTraining
 
     public string CorrectOption { get; set; } = null!;
 
-    public long ExamTrainingId { get; set; }
+    public long ExamId { get; set; }
 
     public long? DisplayOrder { get; set; }
 
-    public string? CreatedBy { get; set; }
+    public long? CreatedBy { get; set; }
 
     public DateOnly? CreatedAt { get; set; }
 
-    public string? UpdatedBy { get; set; }
+    public long? UpdatedBy { get; set; }
 
     public DateOnly? UpdatedAt { get; set; }
+
+    public long? DeleteBy { get; set; }
+
+    public DateOnly? DeleteAt { get; set; }
 }

@@ -1,5 +1,5 @@
-﻿using Backend_InternalQM.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Azure.Core;
+using Backend_InternalQM.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -22,19 +22,12 @@ namespace Backend_InternalQM.Controllers
             return User?.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         }
 
-        protected long GetEmployeeId()
-        {
-            var empIdClaim = User?.FindFirst("EmployeeId");
-            if (empIdClaim == null || !long.TryParse(empIdClaim.Value, out var empId))
-                return 0;
-            return empId;
-        }
-
         protected IActionResult OkResponse<T>(T data)
         {
             return Ok(new ApiResponse<T>
             {
                 Status = true,
+                Message = "Thành công",
                 Data = data
             });
         }
@@ -44,7 +37,7 @@ namespace Backend_InternalQM.Controllers
             return StatusCode(statusCode, new ApiResponse<object>
             {
                 Status = false,
-                Data = null
+                Message = message
             });
         }
     }

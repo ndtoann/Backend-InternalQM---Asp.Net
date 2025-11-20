@@ -6,7 +6,7 @@ namespace Backend_InternalQM.Models
     {
         [Required(ErrorMessage = "Tên đăng nhập là bắt buộc")]
         [StringLength(100)]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
         [StringLength(255)]

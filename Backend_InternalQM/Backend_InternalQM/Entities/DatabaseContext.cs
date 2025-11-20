@@ -15,71 +15,67 @@ public partial class DatabaseContext : DbContext
     {
     }
 
-    public virtual DbSet<Account> Account { get; set; }
+    public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountPermission> AccountPermission { get; set; }
 
-    public virtual DbSet<Department> Department { get; set; }
+    public virtual DbSet<Department> Departments { get; set; }
 
-    public virtual DbSet<Employee> Employee { get; set; }
+    public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<EmployeeViolation5S> EmployeeViolation5S { get; set; }
 
-    public virtual DbSet<EmployeeWorkHistory> EmployeeWorkHistorie { get; set; }
+    public virtual DbSet<EmployeeWorkHistory> EmployeeWorkHistories { get; set; }
 
-    public virtual DbSet<EquipmentRepair> EquipmentRepair { get; set; }
+    public virtual DbSet<EquipmentRepair> EquipmentRepairs { get; set; }
 
-    public virtual DbSet<ExamPeriodic> ExamPeriodic { get; set; }
+    public virtual DbSet<ExaminationCycle> ExaminationCycles { get; set; }
 
-    public virtual DbSet<ExamPeriodicAnswer> ExamPeriodicAnswer { get; set; }
+    public virtual DbSet<Exam> Exams { get; set; }
 
-    public virtual DbSet<ExamTraining> ExamTraining { get; set; }
+    public virtual DbSet<ExamResult> ExamResults { get; set; }
 
-    public virtual DbSet<ExamTrainingAnswer> ExamTrainingAnswer { get; set; }
+    public virtual DbSet<ExamTrialRun> ExamTrialRuns { get; set; }
 
-    public virtual DbSet<ExamTrialRun> ExamTrialRun { get; set; }
+    public virtual DbSet<ExamTrialRunAnswer> ExamTrialRunAnswers { get; set; }
 
-    public virtual DbSet<ExamTrialRunAnswer> ExamTrialRunAnswer { get; set; }
+    public virtual DbSet<Kaizen> Kaizens { get; set; }
 
-    public virtual DbSet<Kaizen> Kaizen { get; set; }
+    public virtual DbSet<Machine> Machines { get; set; }
 
-    public virtual DbSet<Machine> Machine { get; set; }
+    public virtual DbSet<MachineGroup> MachineGroups { get; set; }
 
-    public virtual DbSet<MachineGroup> MachineGroup { get; set; }
-
-    public virtual DbSet<MachineMaintenance> MachineMaintenance { get; set; }
+    public virtual DbSet<MachineMaintenance> MachineMaintenances { get; set; }
 
     public virtual DbSet<Machine_MG> Machine_MG { get; set; }
 
     public virtual DbSet<MachineParameter> MachineParameters { get; set; }
 
-    public virtual DbSet<ManufacturingDefect> ManufacturingDefect { get; set; }
+    public virtual DbSet<ManufacturingDefect> ManufacturingDefects { get; set; }
 
-    public virtual DbSet<PerformanceFeedback> PerformanceFeedback { get; set; }
+    public virtual DbSet<PerformanceFeedback> PerformanceFeedbacks { get; set; }
 
-    public virtual DbSet<Permission> Permission { get; set; }
+    public virtual DbSet<Permission> Permissions { get; set; }
 
-    public virtual DbSet<Productivity> Productivitie { get; set; }
+    public virtual DbSet<Productivity> Productivities { get; set; }
 
-    public virtual DbSet<QuestionPeriodic> QuestionPeriodic { get; set; }
+    public virtual DbSet<Question> Questions { get; set; }
 
-    public virtual DbSet<QuestionTraining> QuestionTraining { get; set; }
+    public virtual DbSet<QuestionTrialRun> QuestionTrialRuns { get; set; }
 
-    public virtual DbSet<QuestionTrialRun> QuestionTrialRun { get; set; }
+    public virtual DbSet<ReplacementEquipmentAndSupply> ReplacementEquipmentAndSupplies { get; set; }
 
-    public virtual DbSet<ReplacementEquipmentAndSupply> ReplacementEquipmentAndSupplie { get; set; }
+    public virtual DbSet<SawingPerformance> SawingPerformances { get; set; }
 
-    public virtual DbSet<SawingPerformance> SawingPerformance { get; set; }
+    public virtual DbSet<TestRunPractice> TestRunPractices { get; set; }
 
-    public virtual DbSet<TestRunPractice> TestRunPractice { get; set; }
+    public virtual DbSet<TestRunPracticeDetail> TestRunPracticeDetails { get; set; }
 
-    public virtual DbSet<TestRunPracticeDetail> TestRunPracticeDetail { get; set; }
+    public virtual DbSet<Training> Trainings { get; set; }
 
-    public virtual DbSet<Training> Training { get; set; }
+    public virtual DbSet<TrainingSession> TrainingSessions { get; set; }
 
-    public virtual DbSet<TrainingSession> TrainingSession { get; set; }
-
-    public virtual DbSet<TrainingSessionDetail> TrainingSessionDetail { get; set; }
+    public virtual DbSet<TrainingSessionDetail> TrainingSessionDetails { get; set; }
 
     public virtual DbSet<Violation5S> Violation5S { get; set; }
 
@@ -91,63 +87,51 @@ public partial class DatabaseContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.ToTable("Account");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+            entity.ToTable("Accounts");
             entity.Property(e => e.Password).HasMaxLength(255);
             entity.Property(e => e.Salt).HasMaxLength(255);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.UserName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<AccountPermission>(entity =>
         {
             entity.HasKey(e => new { e.AccountId, e.PermissionId });
-
             entity.ToTable("AccountPermission");
         });
 
         modelBuilder.Entity<Department>(entity =>
         {
-            entity.ToTable("Department");
-
+            entity.ToTable("Departments");
             entity.Property(e => e.DepartmentName).HasMaxLength(100);
             entity.Property(e => e.Note).HasMaxLength(500);
         });
 
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity.ToTable("Employee");
+            entity.ToTable("Employees");
 
             entity.Property(e => e.Avatar).HasMaxLength(255);
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
             entity.Property(e => e.EmployeeCode).HasMaxLength(50);
             entity.Property(e => e.EmployeeName).HasMaxLength(100);
             entity.Property(e => e.Gender).HasMaxLength(5);
             entity.Property(e => e.Position).HasMaxLength(50);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
         modelBuilder.Entity<EmployeeViolation5S>(entity =>
         {
             entity.ToTable("EmployeeViolation5S");
-
             entity.Property(e => e.Violation5Sid).HasColumnName("Violation5SId");
         });
 
         modelBuilder.Entity<EmployeeWorkHistory>(entity =>
         {
-            entity.ToTable("EmployeeWorkHistory");
-
+            entity.ToTable("EmployeeWorkHistories");
             entity.Property(e => e.Department).HasMaxLength(50);
         });
 
         modelBuilder.Entity<EquipmentRepair>(entity =>
         {
-            entity.ToTable("EquipmentRepair");
-
+            entity.ToTable("EquipmentRepairs");
             entity.Property(e => e.EquipmentCode).HasMaxLength(50);
             entity.Property(e => e.EquipmentName).HasMaxLength(200);
             entity.Property(e => e.RecipientOfRepairedDevice).HasMaxLength(100);
@@ -155,88 +139,55 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.RepairCosts).HasMaxLength(500);
         });
 
-        modelBuilder.Entity<ExamPeriodic>(entity =>
+        modelBuilder.Entity<Exam>(entity =>
         {
-            entity.ToTable("ExamPeriodic");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+            entity.ToTable("Exams");
             entity.Property(e => e.ExamName).HasMaxLength(500);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<ExamPeriodicAnswer>(entity =>
+        modelBuilder.Entity<ExaminationCycle>(entity =>
         {
-            entity.ToTable("ExamPeriodicAnswer");
+            entity.ToTable("ExaminationCycles");
+            entity.Property(e => e.Type).HasMaxLength(50);
+            entity.Property(e => e.CycleName).HasMaxLength(50);
+        });
 
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+        modelBuilder.Entity<ExamResult>(entity =>
+        {
+            entity.ToTable("ExamResults");
             entity.Property(e => e.EmployeeCode).HasMaxLength(50);
-            entity.Property(e => e.EmployeeName).HasMaxLength(100);
             entity.Property(e => e.EssayResultPdf)
                 .HasMaxLength(255)
                 .HasColumnName("EssayResultPDF");
             entity.Property(e => e.ListAnswer).HasMaxLength(500);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<ExamTraining>(entity =>
-        {
-            entity.ToTable("ExamTraining");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
-            entity.Property(e => e.ExamName).HasMaxLength(500);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<ExamTrainingAnswer>(entity =>
-        {
-            entity.ToTable("ExamTrainingAnswer");
-
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
-            entity.Property(e => e.EmployeeCode).HasMaxLength(50);
-            entity.Property(e => e.EmployeeName).HasMaxLength(100);
-            entity.Property(e => e.EssayResultPdf)
-                .HasMaxLength(255)
-                .HasColumnName("EssayResultPDF");
-            entity.Property(e => e.ListAnswer).HasMaxLength(500);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            
         });
 
         modelBuilder.Entity<ExamTrialRun>(entity =>
         {
-            entity.ToTable("ExamTrialRun");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+            entity.ToTable("ExamTrialRuns");
             entity.Property(e => e.ExamName).HasMaxLength(500);
             entity.Property(e => e.TestLevel).HasMaxLength(20);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
         modelBuilder.Entity<ExamTrialRunAnswer>(entity =>
         {
-            entity.ToTable("ExamTrialRunAnswer");
-
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+            entity.ToTable("ExamTrialRunAnswers");
             entity.Property(e => e.EmployeeCode).HasMaxLength(10);
             entity.Property(e => e.EmployeeName).HasMaxLength(50);
             entity.Property(e => e.EssayResultPdf)
                 .HasMaxLength(255)
                 .HasColumnName("EssayResultPDF");
             entity.Property(e => e.ListAnswer).HasMaxLength(500);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            
         });
 
         modelBuilder.Entity<Kaizen>(entity =>
         {
-            entity.ToTable("Kaizen");
-
+            entity.ToTable("Kaizens");
             entity.Property(e => e.AppliedDepartment).HasMaxLength(50);
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.CurrentStatus).HasMaxLength(500);
             entity.Property(e => e.Deadline).HasMaxLength(100);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
             entity.Property(e => e.Department).HasMaxLength(50);
             entity.Property(e => e.EmployeeCode).HasMaxLength(50);
             entity.Property(e => e.EmployeeName).HasMaxLength(100);
@@ -245,17 +196,13 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.Picture).HasMaxLength(255);
             entity.Property(e => e.StartTime).HasMaxLength(100);
             entity.Property(e => e.TeamLeaderRating).HasMaxLength(10);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Machine>(entity =>
         {
-            entity.ToTable("Machine");
-
+            entity.ToTable("Machines");
             entity.Property(e => e.BottleTaper).HasMaxLength(50);
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.DeepSize).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
             entity.Property(e => e.Department).HasMaxLength(50);
             entity.Property(e => e.HighSize).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.MachineCapacity).HasColumnType("decimal(10, 3)");
@@ -278,7 +225,6 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.TailstockX).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.TailstockZ).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.TypeMachine).HasMaxLength(100);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
             entity.Property(e => e.Version).HasMaxLength(100);
             entity.Property(e => e.Weight).HasColumnType("decimal(4, 2)");
             entity.Property(e => e.WideSize).HasColumnType("decimal(18, 2)");
@@ -286,51 +232,38 @@ public partial class DatabaseContext : DbContext
 
         modelBuilder.Entity<MachineGroup>(entity =>
         {
-            entity.ToTable("MachineGroup");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+            entity.ToTable("MachineGroups");
             entity.Property(e => e.GroupName).HasMaxLength(50);
             entity.Property(e => e.MachineType).HasMaxLength(200);
             entity.Property(e => e.Standard).HasMaxLength(500);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
         modelBuilder.Entity<MachineMaintenance>(entity =>
         {
-            entity.ToTable("MachineMaintenance");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+            entity.ToTable("MachineMaintenances");
             entity.Property(e => e.MachineCode).HasMaxLength(50);
             entity.Property(e => e.MaintenanceStaff).HasMaxLength(200);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            
         });
 
         modelBuilder.Entity<Machine_MG>(entity =>
         {
             entity.HasKey(e => new { e.MachineCode, e.MachineGroupId });
-
             entity.ToTable("Machine_MG");
-
             entity.Property(e => e.MachineCode).HasMaxLength(50);
             entity.Property(e => e.Material).HasMaxLength(50);
         });
 
         modelBuilder.Entity<MachineParameter>(entity =>
         {
-            entity.ToTable("MachineParameter");
-
+            entity.ToTable("MachineParameters");
             entity.Property(e => e.Parameters).HasColumnType("decimal(6, 3)");
             entity.Property(e => e.Type).HasMaxLength(100);
         });
 
         modelBuilder.Entity<ManufacturingDefect>(entity =>
         {
-            entity.ToTable("ManufacturingDefect");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
+            entity.ToTable("ManufacturingDefects");
             entity.Property(e => e.Department).HasMaxLength(20);
             entity.Property(e => e.EmployeeCode).HasMaxLength(50);
             entity.Property(e => e.ErrorCause).HasMaxLength(50);
@@ -347,22 +280,17 @@ public partial class DatabaseContext : DbContext
             entity.Property(e => e.ReviewNnds).HasMaxLength(500);
             entity.Property(e => e.TimeWriteError).HasMaxLength(50);
             entity.Property(e => e.ToleranceAssessment).HasMaxLength(20);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            
         });
 
         modelBuilder.Entity<PerformanceFeedback>(entity =>
         {
-            entity.ToTable("PerformanceFeedback");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            entity.ToTable("PerformanceFeedbacks");
         });
 
         modelBuilder.Entity<Permission>(entity =>
         {
-            entity.ToTable("Permission");
-
+            entity.ToTable("Permissions");
             entity.Property(e => e.ClaimValue).HasMaxLength(100);
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.Module).HasMaxLength(100);
@@ -370,38 +298,22 @@ public partial class DatabaseContext : DbContext
 
         modelBuilder.Entity<Productivity>(entity =>
         {
-            entity.ToTable("Productivity");
-
+            entity.ToTable("Productivities");
             entity.Property(e => e.EmployeeCode).HasMaxLength(50);
             entity.Property(e => e.EmployeeName).HasMaxLength(50);
             entity.Property(e => e.Score).HasColumnType("decimal(5, 2)");
         });
 
-        modelBuilder.Entity<QuestionPeriodic>(entity =>
+        modelBuilder.Entity<Question>(entity =>
         {
-            entity.ToTable("QuestionPeriodic");
-
+            entity.ToTable("Questions");
             entity.Property(e => e.CorrectOption).HasMaxLength(10);
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<QuestionTraining>(entity =>
-        {
-            entity.ToTable("QuestionTraining");
-
-            entity.Property(e => e.CorrectOption).HasMaxLength(10);
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
         modelBuilder.Entity<QuestionTrialRun>(entity =>
         {
-            entity.ToTable("QuestionTrialRun");
-
+            entity.ToTable("QuestionTrialRuns");
             entity.Property(e => e.CorrectOption).HasMaxLength(10);
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
         modelBuilder.Entity<ReplacementEquipmentAndSupply>(entity =>
@@ -412,8 +324,7 @@ public partial class DatabaseContext : DbContext
 
         modelBuilder.Entity<SawingPerformance>(entity =>
         {
-            entity.ToTable("SawingPerformance");
-
+            entity.ToTable("SawingPerformances");
             entity.Property(e => e.EmployeeCode).HasMaxLength(50);
             entity.Property(e => e.EmployeeName).HasMaxLength(100);
             entity.Property(e => e.SalesAmountUsd)
@@ -424,9 +335,9 @@ public partial class DatabaseContext : DbContext
 
         modelBuilder.Entity<TestRunPractice>(entity =>
         {
-            entity.ToTable("TestRunPractice");
+            entity.ToTable("TestRunPractices");
 
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            
             entity.Property(e => e.PartName).HasMaxLength(50);
             entity.Property(e => e.Result).HasMaxLength(10);
             entity.Property(e => e.TestRunLevel).HasMaxLength(20);
@@ -435,40 +346,32 @@ public partial class DatabaseContext : DbContext
 
         modelBuilder.Entity<TestRunPracticeDetail>(entity =>
         {
-            entity.ToTable("TestRunPracticeDetail");
-
+            entity.ToTable("TestRunPracticeDetails");
             entity.Property(e => e.OperationName).HasMaxLength(10);
         });
 
         modelBuilder.Entity<Training>(entity =>
         {
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
             entity.Property(e => e.TrainingName).HasMaxLength(100);
             entity.Property(e => e.Type).HasMaxLength(20);
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
         });
 
         modelBuilder.Entity<TrainingSession>(entity =>
         {
-            entity.ToTable("TrainingSession");
-
+            entity.ToTable("TrainingSessions");
             entity.Property(e => e.EvaluationPeriod).HasMaxLength(100);
         });
 
         modelBuilder.Entity<TrainingSessionDetail>(entity =>
         {
-            entity.ToTable("TrainingSessionDetail");
+            entity.ToTable("TrainingSessionDetails");
         });
 
         modelBuilder.Entity<Violation5S>(entity =>
         {
             entity.ToTable("Violation5S");
-
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.DeleteBy).HasMaxLength(50);
             entity.Property(e => e.Penaty).HasColumnType("decimal(10, 0)");
-            entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+            
         });
 
         OnModelCreatingPartial(modelBuilder);

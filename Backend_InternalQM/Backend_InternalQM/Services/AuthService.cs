@@ -29,13 +29,13 @@ namespace Backend_InternalQM.Services
             {
                 var accountData = await (from a in _context.Account
                                          join e in _context.Employee on a.EmployeeId equals e.Id
-                                         where a.UserName == request.UserName && a.DeleteAt == null
+                                         where a.UserName == request.Username && a.DeleteAt == null
                                          select new { Account = a, Employee = e })
                     .FirstOrDefaultAsync();
 
                 if (accountData == null)
                 {
-                    _logger.LogWarning($"Tài khoản không hợp lệ: {request.UserName}");
+                    _logger.LogWarning($"Tài khoản không hợp lệ: {request.Username}");
                     return new LoginResponse
                     {
                         Success = false,
@@ -45,7 +45,7 @@ namespace Backend_InternalQM.Services
 
                 if (!accountData.Account.UserName.ValidPassword(accountData.Account.Salt, request.Password, accountData.Account.Password))
                 {
-                    _logger.LogWarning($"Đăng nhập thất bại: {request.UserName}");
+                    _logger.LogWarning($"Đăng nhập thất bại: {request.Username}");
                     return new LoginResponse
                     {
                         Success = false,
@@ -56,7 +56,7 @@ namespace Backend_InternalQM.Services
                 var userDto = await GetUserById(accountData.Account.Id);
                 var token = GenerateJwtToken(userDto);
 
-                _logger.LogInformation($"Đăng nhập thành công: {request.UserName}");
+                _logger.LogInformation($"Đăng nhập thành công: {request.Username}");
 
                 return new LoginResponse
                 {
@@ -124,7 +124,7 @@ namespace Backend_InternalQM.Services
                     Salt = salt,
                     EmployeeId = request.EmployeeId,
                     CreatedAt = DateOnly.FromDateTime(DateTime.Now),
-                    CreatedBy = "System"
+                    CreatedBy = 0
                 };
 
                 _context.Account.Add(account);

@@ -1,142 +1,116 @@
 ﻿using Backend_InternalQM.Entities;
+using Backend_InternalQM.Models;
+using Backend_InternalQM.Modules.EmployeeModule;
+using Backend_InternalQM.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
+using System.Security.Claims;
 
 namespace Backend_InternalQM.Controllers
 {
     public class EmployeeController : BaseController
     {
+        private readonly IEmployeeService _employeeService;
         private readonly DatabaseContext _context;
         private readonly ILogger<EmployeeController> _logger;
 
-        public EmployeeController(DatabaseContext context, ILogger<EmployeeController> logger)
+        public EmployeeController(IEmployeeService employeeService, DatabaseContext context, ILogger<EmployeeController> logger)
         {
+            _employeeService = employeeService;
             _context = context;
             _logger = logger;
         }
 
         [HttpGet]
         [Authorize(Policy = "ViewEmployee")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] EmployeeFilterDto filters)
         {
             try
             {
-                var employees = await _context.Employee
-                    .Where(e => e.DeleteAt == null)
-                    .Select(e => new
-                    {
-                        e.Id,
-                        e.EmployeeCode,
-                        e.EmployeeName,
-                        e.Avatar,
-                        e.DateOfBirth,
-                        e.Gender,
-                        e.DepartmentId,
-                        e.HireDate,
-                        e.Position
-                    })
-                    .ToListAsync();
-
+                var employees = await _employeeService.GetAllEmployees(filters);
                 return OkResponse(employees);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Lỗi khi lấy danh sách nhân viên: {ex.Message}");
                 return ErrorResponse("Lỗi hệ thống", 500);
             }
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Policy = "ViewEmployee")]
         public async Task<IActionResult> GetById(long id)
         {
             try
             {
-                var employee = await _context.Employee
-                    .FirstOrDefaultAsync(e => e.Id == id && e.DeleteAt == null);
-
+                if (id <= 0 || id == null)
+                {
+                    return ErrorResponse("ID không hợp lệ", 400);
+                }
+                var employee = await _employeeService.GetEmployeeById(id);
                 if (employee == null)
                     return ErrorResponse("Không tìm thấy nhân viên", 404);
-
                 return OkResponse(employee);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Lỗi khi lấy thông tin nhân viên: {ex.Message}");
                 return ErrorResponse("Lỗi hệ thống", 500);
             }
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] Employee request)
+        public async Task<IActionResult> Create([FromBody] EmployeeDto req)
         {
+            if (!ModelState.IsValid)
+            {
+                return ErrorResponse("Dữ liệu không hợp lệ", 400);
+            }
+
             try
             {
-                if (!ModelState.IsValid)
-                    return ErrorResponse("Dữ liệu không hợp lệ");
-
-                var employee = new Employee
-                {
-                    EmployeeCode = request.EmployeeCode,
-                    EmployeeName = request.EmployeeName,
-                    Avatar = request.Avatar,
-                    DateOfBirth = request.DateOfBirth,
-                    Gender = request.Gender,
-                    DepartmentId = request.DepartmentId,
-                    HireDate = request.HireDate,
-                    Position = request.Position,
-                    Note = request.Note,
-                    CreatedAt = DateOnly.FromDateTime(DateTime.Now),
-                    CreatedBy = GetUserName()
-                };
-
-                _context.Employee.Add(employee);
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"Thêm nhân viên: {employee.EmployeeName} - {GetUserName()}");
-
-                return OkResponse(employee);
+                var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var newEmployee = await _employeeService.Create(req, GetUserId());
+                return OkResponse(newEmployee);
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogWarning($"Lỗi nghiệp vụ: {ex.Message}");
+                return ErrorResponse(ex.Message, 400);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Lỗi thêm nhân viên: {ex.Message}");
-                return ErrorResponse("Lỗi hệ thống", 500);
+                _logger.LogError(ex, "Lỗi hệ thống khi thêm nhân viên");
+                return ErrorResponse("Lỗi hệ thống, vui lòng thử lại", 500);
             }
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update(long id, [FromBody] Employee request)
+        public async Task<IActionResult> Update(long id, [FromBody] EmployeeDto req)
         {
+            if (!ModelState.IsValid)
+            {
+                return ErrorResponse("Dữ liệu không hợp lệ", 400);
+            }
+            if(id <= 0)
+            {
+                return ErrorResponse("Thông tin không hợp lệ", 400);
+            }
             try
             {
-                var employee = await _context.Employee.FindAsync(id);
-                if (employee == null)
-                    return ErrorResponse("Không tìm thấy nhân viên", 404);
-
-                employee.EmployeeName = request.EmployeeName ?? employee.EmployeeName;
-                employee.Avatar = request.Avatar ?? employee.Avatar;
-                employee.DateOfBirth = request.DateOfBirth ?? employee.DateOfBirth;
-                employee.Gender = request.Gender ?? employee.Gender;
-                employee.DepartmentId = request.DepartmentId;
-                employee.Position = request.Position ?? employee.Position;
-                employee.Note = request.Note ?? employee.Note;
-                employee.UpdatedAt = DateOnly.FromDateTime(DateTime.Now);
-                employee.UpdatedBy = GetUserName();
-
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"Cập nhật nhân viên: {employee.EmployeeName} - {GetUserName()}");
-
-                return OkResponse(employee);
+                var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var newEmployee = await _employeeService.Update(id, req, GetUserId());
+                return OkResponse(newEmployee);
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogWarning($"Lỗi nghiệp vụ: {ex.Message}");
+                return ErrorResponse(ex.Message, 400);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Lỗi cập nhật nhân viên: {ex.Message}");
-                return ErrorResponse("Lỗi hệ thống", 500);
+                _logger.LogError(ex, "Lỗi hệ thống khi thêm nhân viên");
+                return ErrorResponse("Lỗi hệ thống, vui lòng thử lại", 500);
             }
         }
 
@@ -144,25 +118,24 @@ namespace Backend_InternalQM.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(long id)
         {
+            if (id <= 0)
+            {
+                return ErrorResponse("Thông tin không hợp lệ", 400);
+            }
             try
             {
-                var employee = await _context.Employee.FindAsync(id);
-                if (employee == null)
-                    return ErrorResponse("Không tìm thấy nhân viên", 404);
-
-                employee.DeleteAt = DateOnly.FromDateTime(DateTime.Now);
-                employee.DeleteBy = GetUserName();
-
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"Xóa nhân viên: {employee.EmployeeName} - {GetUserName()}");
-
-                return OkResponse(true);
+                var deleteEmployee = await _employeeService.SoftDelete(id, GetUserId());
+                return OkResponse("Xoá nhân viên thành công");
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogWarning($"Lỗi nghiệp vụ: {ex.Message}");
+                return ErrorResponse(ex.Message, 400);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Lỗi xóa nhân viên: {ex.Message}");
-                return ErrorResponse("Lỗi hệ thống", 500);
+                _logger.LogError(ex, "Lỗi hệ thống khi thêm nhân viên");
+                return ErrorResponse("Lỗi hệ thống, vui lòng thử lại", 500);
             }
         }
     }

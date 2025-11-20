@@ -13,15 +13,15 @@ public partial class PerformanceFeedback
 
     public byte Status { get; set; }
 
-    public string? CreatedBy { get; set; }
+    public long? CreatedBy { get; set; }
 
     public DateOnly? CreatedAt { get; set; }
 
-    public string? UpdatedBy { get; set; }
+    public long? UpdatedBy { get; set; }
 
     public DateOnly? UpdatedAt { get; set; }
 
-    public string? DeleteBy { get; set; }
+    public long? DeleteBy { get; set; }
 
     public DateOnly? DeleteAt { get; set; }
 }

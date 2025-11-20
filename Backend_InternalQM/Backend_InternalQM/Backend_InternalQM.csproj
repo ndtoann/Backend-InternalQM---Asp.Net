@@ -23,8 +23,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\Employee\" />
-    <Folder Include="Modules\Account\" />
+    <Folder Include="Modules\ExamPeriodicModule\" />
+    <Folder Include="Modules\ExamTrainingModule\" />
+    <Folder Include="Modules\ExamTrialRunModule\" />
+    <Folder Include="Modules\KaizenModule\" />
+    <Folder Include="Modules\MachineModule\" />
+    <Folder Include="Modules\MachineGroupModule\" />
+    <Folder Include="Modules\MachineMaintenanceModule\" />
+    <Folder Include="Modules\ManufacturingDefectModule\" />
+    <Folder Include="Modules\EquipmentRepairModule\" />
+    <Folder Include="Modules\Violation5S\" />
+    <Folder Include="Modules\TestRunPractice\" />
+    <Folder Include="Modules\SawingPerformance\" />
+    <Folder Include="Modules\ProductivityModule\" />
+    <Folder Include="Modules\PerformanceFeedback\" />
+    <Folder Include="Modules\TrainingModule\" />
   </ItemGroup>
 
 </Project>
